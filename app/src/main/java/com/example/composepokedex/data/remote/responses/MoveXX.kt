@@ -1,6 +1,0 @@
-package com.example.composepokedex.data.remote.responses
-
-data class MoveXX(
-    val move: MoveXXX,
-    val version_group_details: List<VersionGroupDetailX>
-)

@@ -1,22 +1,11 @@
-package com.example.composepokedex.data.remote.responses
+package com.plcoding.jetpackcomposepokedex.data.remote.responses
+
+
+import com.google.gson.annotations.SerializedName
 
 data class PokemonList(
-    val abilities: List<AbilityXX>,
-    val base_experience: Int,
-    val forms: List<FormX>,
-    val game_indices: List<GameIndiceX>,
-    val height: Int,
-    val held_items: List<HeldItemX>,
-    val id: Int,
-    val is_default: Boolean,
-    val location_area_encounters: String,
-    val moves: List<MoveXX>,
-    val name: String,
-    val order: Int,
-    val past_types: List<Any>,
-    val species: SpeciesX,
-    val sprites: SpritesX,
-    val stats: List<StatXX>,
-    val types: List<TypeXX>,
-    val weight: Int
+    val count: Int,
+    val next: String,
+    val previous: Any,
+    val results: List<Result>
 )
