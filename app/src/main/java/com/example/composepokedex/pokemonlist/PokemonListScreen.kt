@@ -24,12 +24,17 @@ import com.example.composepokedex.R
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun PokemonListScreen(
     navController: NavController
 ) {
+ListScreen()
+}
 
+@Composable
+fun ListScreen(){
     Surface(
         color = MaterialTheme.colors.background,
         modifier = Modifier.fillMaxSize()
@@ -61,8 +66,12 @@ fun SearchBar(
     hint: String = "",
     onSearch: (String) -> Unit = {}
 ) {
-    var text by remember { mutableStateOf("") }
-    var isHintDisplayed by remember { mutableStateOf(hint != "") }
+    var text by remember {
+        mutableStateOf("")
+    }
+    var isHintDisplayed by remember {
+        mutableStateOf(hint != "")
+    }
 
     Box(modifier = modifier) {
         BasicTextField(
@@ -80,12 +89,10 @@ fun SearchBar(
                 .background(Color.White, CircleShape)
                 .padding(horizontal = 20.dp, vertical = 12.dp)
                 .onFocusChanged {
-                    isHintDisplayed = !it.isFocused && text.isEmpty()
-
-                    // isHintDisplayed = it != it.isFocused
+                     isHintDisplayed = it.isFocused != true
                 }
 
-        ) {
+        )
             if (isHintDisplayed) {
                 Text(
                     text = hint,
@@ -94,8 +101,15 @@ fun SearchBar(
                         .padding(horizontal = 20.dp, vertical = 12.dp)
                 )
             }
-        }
+
     }
 }
+
+@Preview
+@Composable
+fun ComposablePreview() {
+    ListScreen()
+}
+
 
 
