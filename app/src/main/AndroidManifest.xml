@@ -13,7 +13,7 @@
         android:theme="@style/Theme.ComposePokedex"
         tools:ignore="AllowBackup">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.views.nav_host.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.ComposePokedex.NoActionBar">
