@@ -106,7 +106,6 @@ fun SearchBar(
                 .onFocusChanged {
                     isHintDisplayed = it.isFocused != true
                 }
-
         )
         if (isHintDisplayed) {
             Text(
