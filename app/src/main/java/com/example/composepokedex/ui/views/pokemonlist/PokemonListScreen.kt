@@ -1,5 +1,6 @@
 package com.example.composepokedex.ui.views.pokemonlist
 
+import android.graphics.Bitmap
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,9 +34,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.bitmap.BitmapPool
 import coil.compose.rememberImagePainter
+import coil.size.Size
+import coil.transform.Transformation
 import com.example.composepokedex.data.models.PokedexListEntry
 import com.example.composepokedex.ui.theme.RobotoCondensed
+import com.google.accompanist.coil.rememberCoilPainter
 
 @Composable
 fun PokemonListScreen(
@@ -146,19 +151,16 @@ fun PokemonList(
         contentAlignment = Center,
         modifier = Modifier.fillMaxSize()
     ) {
-        if(isLoading) {
+        if (isLoading) {
             CircularProgressIndicator(color = MaterialTheme.colors.primary)
         }
-        if(loadError.isNotEmpty()) {
+        if (loadError.isNotEmpty()) {
             RetrySection(error = loadError) {
                 viewModel.loadPokemonPaginated()
             }
         }
     }
-
 }
-
-
 @Composable
 fun PokedexEntry(
     entry: PokedexListEntry,
@@ -192,10 +194,26 @@ fun PokedexEntry(
     ) {
         Column {
             Image(
-                painter = rememberImagePainter(
-                    data = entry.imageUrl,
-                    builder = {
-                        crossfade(true)
+                painter = rememberCoilPainter(
+                    request = entry.imageUrl,
+                    requestBuilder = {
+                        transformations(
+                            object : Transformation {
+                                override fun key(): String {
+                                    return entry.imageUrl
+                                }
+                                override suspend fun transform(
+                                    pool: BitmapPool,
+                                    input: Bitmap,
+                                    size: Size
+                                ): Bitmap {
+                                    viewModel.calcDominantColor(input) { color ->
+                                        dominantColor = color
+                                    }
+                                    return input
+                                }
+                            }
+                        )
                     }
                 ),
                 contentDescription = null,
@@ -244,19 +262,19 @@ fun PokedexRow(
 
 @Composable
 fun RetrySection(
-   error:String,
-   onRetry: () -> Unit
-){
-Column {
-    Text(error,color = Color.Red,fontSize = 18.sp)
-    Spacer(modifier = Modifier.height(8.dp))
-    Button(
-        onClick = { onRetry() },
-        modifier = Modifier.align(CenterHorizontally)
-    ) {
-        Text(text = "Retry")
+    error: String,
+    onRetry: () -> Unit
+) {
+    Column {
+        Text(error, color = Color.Red, fontSize = 18.sp)
+        Spacer(modifier = Modifier.height(8.dp))
+        Button(
+            onClick = { onRetry() },
+            modifier = Modifier.align(CenterHorizontally)
+        ) {
+            Text(text = "Retry")
+        }
     }
-}
 }
 
 @Preview

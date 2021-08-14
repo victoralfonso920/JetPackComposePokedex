@@ -69,8 +69,7 @@ class PokemonListViewModel @Inject constructor(
         }
     }
 
-    fun calcDominantColor(drawable: Drawable,onFinish: (Color) -> Unit){
-        val bmp = (drawable as BitmapDrawable).bitmap.copy(Bitmap.Config.ARGB_8888,true)
+    fun calcDominantColor(bmp: Bitmap,onFinish: (Color) -> Unit){
 
         Palette.from(bmp).generate { palette ->
             palette?.dominantSwatch?.rgb?.let { colorValue ->
